@@ -4,15 +4,12 @@
     Author     : KALINDU
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Registration</title>
-        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+        <script src="js/jquery-2.2.4.js"></script>
         <script>
-            var uri = "http://localhost:8080/CSRFSyncT/token";
+            var uri = 'http://localhost:8080/CSRFSyncT/token';
             $(document).ready(function() {
 		$.ajax({
 			type : "GET",
@@ -22,7 +19,7 @@
 			crossDomain : true,
 			processData : true,
 			success : function(data) {
-				$("#csrf").val(data['token']);
+				$('#csrf').val(data['token']);
                                 
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {

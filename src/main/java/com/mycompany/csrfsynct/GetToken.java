@@ -5,7 +5,6 @@
  */
 package com.mycompany.csrfsynct;
 
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,55 +14,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author KALINDU
- */
-@WebServlet(name = "GetToken", urlPatterns = {"/token"})
+import com.google.gson.JsonObject;
+
+@WebServlet(name = "Token", urlPatterns = { "/token" })
 public class GetToken extends HttpServlet {
-    
-    String csrfToken = null;
 
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Cookie [] cookies = request.getCookies();
-            if(cookies != null){
-                for(Cookie cookie : cookies){
-                    if(cookie.getName().equals("JSESSIONID")){
-                        csrfToken = new Map().getValue(cookie.getValue());
-                    }
-                }
-            }
-            System.out.println("Token in token "+csrfToken);
-            JsonObject json = new JsonObject();
-            json.addProperty("token", csrfToken);
-            System.out.println("Json object : "+json.toString());
-        } finally {
-            out.close();
-        }
-    }
+	String csrfToken = null;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		processRequest(request, response);
+	}
 
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+		PrintWriter out = response.getWriter();
+		try {
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("JSESSIONID")) {
+						csrfToken = new Map().getValue(cookie.getValue());
+					}
+				}
+			}
+			
+			//convert response to JsonObject
+			JsonObject json = new JsonObject();
+			json.addProperty("token", csrfToken);
+			out.print(json.toString());
+			
+		} finally {
+			out.close();
+		}
+	}
 
 }
+
